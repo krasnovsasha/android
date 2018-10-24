@@ -17,7 +17,8 @@ public class MenuScreen extends Base2DScreen {
     private Texture redMoon;
     private Vector2 positionOfStart = new Vector2();
     private Vector2 positionOfFinish = new Vector2();
-    private Vector2 touchPos;
+    private Vector2 touchPos = new Vector2();
+    private Vector2 buffer = new Vector2();
 
 
     @Override
@@ -26,46 +27,31 @@ public class MenuScreen extends Base2DScreen {
         batch = new SpriteBatch();
         baseFon = new Texture("baseFon.jpg");
         redMoon = new Texture("redMoon.png");
-        positionOfStart.set(Gdx.graphics.getHeight() / 2 - 150, Gdx.graphics.getWidth() / 2 + 50);
-        positionOfFinish.set(Gdx.graphics.getHeight(), Gdx.graphics.getWidth());
-        touchPos = new Vector2();
-    }
+        positionOfStart.set(Gdx.graphics.getHeight() / 2 - 150, Gdx.graphics.getWidth() / 2 - 50);
+        }
 
     @Override
     public void render(float delta) {
         super.render(delta);
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        buffer.set(touchPos);
+        if (buffer.sub(positionOfStart).len() > positionOfFinish.len()) {
+            positionOfStart.add(positionOfFinish);
+        } else {
+            positionOfStart.set(touchPos);
+        }
         batch.begin();
         batch.draw(baseFon, 0, 0);
         batch.draw(redMoon, positionOfStart.x, positionOfStart.y);
         batch.end();
+        }
 
-        if (Gdx.input.isTouched()) {
-            touchPos.set(Gdx.input.getX(), Gdx.input.getY());
-            positionOfStart.x = touchPos.x;
-            positionOfStart.y = Gdx.graphics.getHeight() - touchPos.y;
-            }
-         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-             positionOfStart.x -= 150 * Gdx.graphics.getDeltaTime();
-             if (positionOfStart.x < 0)
-                 positionOfStart.x = 0;
-         }
-         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            positionOfStart.x += 150 * Gdx.graphics.getDeltaTime();
-             if (positionOfStart.x > Gdx.graphics.getWidth()-redMoon.getWidth())
-                 positionOfStart.x = Gdx.graphics.getWidth()-redMoon.getWidth();
-         }
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            positionOfStart.y += 150 * Gdx.graphics.getDeltaTime();
-            if (positionOfStart.y > Gdx.graphics.getHeight()-redMoon.getHeight())
-                positionOfStart.y = Gdx.graphics.getHeight()-redMoon.getHeight();
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            positionOfStart.y -= 150 * Gdx.graphics.getDeltaTime();
-            if (positionOfStart.y < 0)
-                positionOfStart.y = 0;
-        }
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        touchPos.set(screenX,Gdx.graphics.getHeight() - screenY);
+        positionOfFinish.set(touchPos.cpy().sub(positionOfStart).setLength(1.15f));
+        return  false;
     }
 
     @Override
