@@ -45,7 +45,26 @@ public class MenuScreen extends Base2DScreen {
             touchPos.set(Gdx.input.getX(), Gdx.input.getY());
             positionOfStart.x = touchPos.x;
             positionOfStart.y = Gdx.graphics.getHeight() - touchPos.y;
-
+            }
+         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+             positionOfStart.x -= 150 * Gdx.graphics.getDeltaTime();
+             if (positionOfStart.x < 0)
+                 positionOfStart.x = 0;
+         }
+         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            positionOfStart.x += 150 * Gdx.graphics.getDeltaTime();
+             if (positionOfStart.x > Gdx.graphics.getWidth()-redMoon.getWidth())
+                 positionOfStart.x = Gdx.graphics.getWidth()-redMoon.getWidth();
+         }
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            positionOfStart.y += 150 * Gdx.graphics.getDeltaTime();
+            if (positionOfStart.y > Gdx.graphics.getHeight()-redMoon.getHeight())
+                positionOfStart.y = Gdx.graphics.getHeight()-redMoon.getHeight();
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            positionOfStart.y -= 150 * Gdx.graphics.getDeltaTime();
+            if (positionOfStart.y < 0)
+                positionOfStart.y = 0;
         }
     }
 
