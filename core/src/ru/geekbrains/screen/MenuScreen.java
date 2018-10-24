@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 
 import ru.geekbrains.base.Base2DScreen;
 
@@ -16,9 +17,7 @@ public class MenuScreen extends Base2DScreen {
     private Texture redMoon;
     private Vector2 positionOfStart = new Vector2();
     private Vector2 positionOfFinish = new Vector2();
-    private Vector2 directions = new Vector2();
-
-
+    private Vector2 touchPos;
 
 
     @Override
@@ -27,14 +26,9 @@ public class MenuScreen extends Base2DScreen {
         batch = new SpriteBatch();
         baseFon = new Texture("baseFon.jpg");
         redMoon = new Texture("redMoon.png");
-        positionOfStart.set(Gdx.graphics.getHeight()/2-150,Gdx.graphics.getWidth()/2+50);
-        positionOfFinish.set(Gdx.graphics.getHeight(),Gdx.graphics.getWidth());
-        directions.set(positionOfFinish.sub(positionOfStart).nor());
-        }
-
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return super.touchDown(screenX, screenY, pointer, button);
+        positionOfStart.set(Gdx.graphics.getHeight() / 2 - 150, Gdx.graphics.getWidth() / 2 + 50);
+        positionOfFinish.set(Gdx.graphics.getHeight(), Gdx.graphics.getWidth());
+        touchPos = new Vector2();
     }
 
     @Override
@@ -44,10 +38,16 @@ public class MenuScreen extends Base2DScreen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         batch.draw(baseFon, 0, 0);
-        batch.draw(redMoon,positionOfStart.x, positionOfStart.y);
+        batch.draw(redMoon, positionOfStart.x, positionOfStart.y);
         batch.end();
-        positionOfStart.add(directions);
+
+        if (Gdx.input.isTouched()) {
+            touchPos.set(Gdx.input.getX(), Gdx.input.getY());
+            positionOfStart.x = touchPos.x;
+            positionOfStart.y = Gdx.graphics.getHeight() - touchPos.y;
+
         }
+    }
 
     @Override
     public void dispose() {
