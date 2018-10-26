@@ -7,12 +7,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 
 import ru.geekbrains.base.Base2DScreen;
 
 public class MenuScreen extends Base2DScreen {
-    private SpriteBatch batch;
     private Texture baseFon;
     private Texture redMoon;
     private Vector2 positionOfStart = new Vector2();
@@ -24,10 +22,9 @@ public class MenuScreen extends Base2DScreen {
     @Override
     public void show() {
         super.show();
-        batch = new SpriteBatch();
         baseFon = new Texture("baseFon.jpg");
         redMoon = new Texture("redMoon.png");
-        positionOfStart.set(Gdx.graphics.getHeight() / 2 - 150, Gdx.graphics.getWidth() / 2 - 50);
+        positionOfStart.set(-20f,10f);
     }
 
     @Override
@@ -42,21 +39,20 @@ public class MenuScreen extends Base2DScreen {
             positionOfStart.set(touchPos);
         }
         batch.begin();
-        batch.draw(baseFon, 0, 0);
-        batch.draw(redMoon, positionOfStart.x, positionOfStart.y);
+        batch.draw(baseFon,-42f,-21f,84f,42f);
+        batch.draw(redMoon,positionOfStart.x,positionOfStart.y,2.5f,2.5f);
         batch.end();
     }
 
     @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        touchPos.set(screenX, Gdx.graphics.getHeight() - screenY);
-        positionOfFinish.set(touchPos.cpy().sub(positionOfStart).setLength(1.15f));
+    public boolean touchDown(Vector2 touchPos, int pointer) {
+        this.touchPos = touchPos;
+        positionOfFinish.set(touchPos.cpy().sub(positionOfStart).scl(0.01f));
         return false;
     }
 
     @Override
     public void dispose() {
-        batch.dispose();
         baseFon.dispose();
         redMoon.dispose();
         super.dispose();
