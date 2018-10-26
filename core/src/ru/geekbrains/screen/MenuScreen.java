@@ -28,7 +28,7 @@ public class MenuScreen extends Base2DScreen {
         baseFon = new Texture("baseFon.jpg");
         redMoon = new Texture("redMoon.png");
         positionOfStart.set(Gdx.graphics.getHeight() / 2 - 150, Gdx.graphics.getWidth() / 2 - 50);
-        }
+    }
 
     @Override
     public void render(float delta) {
@@ -45,13 +45,13 @@ public class MenuScreen extends Base2DScreen {
         batch.draw(baseFon, 0, 0);
         batch.draw(redMoon, positionOfStart.x, positionOfStart.y);
         batch.end();
-        }
+    }
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        touchPos.set(screenX,Gdx.graphics.getHeight() - screenY);
+        touchPos.set(screenX, Gdx.graphics.getHeight() - screenY);
         positionOfFinish.set(touchPos.cpy().sub(positionOfStart).setLength(1.15f));
-        return  false;
+        return false;
     }
 
     @Override
